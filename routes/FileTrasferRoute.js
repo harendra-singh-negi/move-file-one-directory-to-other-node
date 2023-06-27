@@ -103,22 +103,6 @@ FileTrasferRoute.get('/', async (req, res) => {
 
     })
     res.status(200).send("Success");
-
-
-
-
-    // // Database query to select all records from the "users" table
-    // const query = 'SELECT * FROM users';
-
-    // // Replace the database query with your own implementation
-
-    // // Example response
-    // const fileData = {
-    //     filename: 'example.txt',
-    //     content: 'This is the content of the file.'
-    // };
-
-    // res.json(fileData);
 });
 
 
@@ -154,7 +138,8 @@ const handleFileChange = (eventType, filename) => {
             const match = filePath.match(/\\([^\\]+)\\common-attachments\\/);
             const extractedText = match ? match[1] : null;
             if (extractedText !== null) {
-                const destinationFilePath = "D:/herendra/" + extractedText;
+                // const destinationFilePath = "D:/herendra/" + extractedText;
+                const destinationFilePath = process.env.DEFAULT_ATTECHMENT_FOLDER_PATH + extractedText;
                 if (['change', 'rename'].includes(eventType)) {
                     if (!fs.existsSync(destinationFilePath)) {
                         try {

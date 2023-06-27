@@ -8,9 +8,10 @@ let SyncDataList = []
 
 const StartFileTrasfer = (datalist = {}) => {
     const { tuid, name, domain } = datalist;
-    const attechmentSql = `CALL SP_MoveActtechmentFile()`;
+    const attechmentSql = `CALL sails_master.SP_MoveActtechmentFile('${tuid}');`;
     query.getReturnData(attechmentSql, tuid).then((response) => {
         const { data, status } = response;
+        console.log("response",response);
         if (status) {
             SyncDataList = data.map(v => {
                 let { attachmentFile, imoNumber } = v;
@@ -30,6 +31,8 @@ const StartFileTrasfer = (datalist = {}) => {
                 return path.basename(sourcePath);
             })
         }
+    }).catch(error=>{
+        console.log("error",error);
     })
 }
 
@@ -80,14 +83,14 @@ const CopyDataSourceToDestination = (destinationFilePath, sourceFilePath) => {
         console.error('Error writing to the destination file:', err);
     });
     writeStream.on('finish', () => {
-        // console.log(`${fileName} copied successfully.`);
+        console.log(`${fileName} copied successfully.`);
     });
     readStream.pipe(writeStream);
 }
 
 FileTrasferRoute.get('/', async (req, res) => {
     const folderPath = process.env.DEFAULT_FOLDER_PATH;
-    const sql = `select tuid,name,domain from tenants where tuid='saildemouse'`;
+    const sql = `select tuid,name,domain from tenants where tuid='41a61f6e-abd0-4da1-85db-3f25916cfab4'`;
     // query.getPostQuery(req, res, sql);
     query.getReturnData(sql).then((response) => {
         const { data, status } = response;
@@ -139,7 +142,8 @@ const handleFileChange = (eventType, filename) => {
             const extractedText = match ? match[1] : null;
             if (extractedText !== null) {
                 // const destinationFilePath = "D:/herendra/" + extractedText;
-                const destinationFilePath = process.env.DEFAULT_ATTECHMENT_FOLDER_PATH + extractedText;
+                const destinationFilePath = process.env.DEFAULT_ATTECHMENT_FOLDER_PATH +"/sails-attachments/"+ extractedText+"/common-attachments";
+                console.log("destinationFilePath",destinationFilePath);
                 if (['change', 'rename'].includes(eventType)) {
                     if (!fs.existsSync(destinationFilePath)) {
                         try {

@@ -44,7 +44,7 @@ xcuserdata/
 # Maven
 /target
 /log
-.env
+#.env
 # Misc
 /.sass-cache
 /connect.lock

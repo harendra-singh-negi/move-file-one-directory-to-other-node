@@ -1,7 +1,6 @@
 const fs = require('fs');
-const path = require('path');
 const query = require('../db/DbQuery');
-const { StartFileTrasfer, SyncDataOneFolderToOtherFolder } = require('./FileTrasferService');
+const { SyncDataOneFolderToOtherFolder } = require('./FileTrasferService');
 
 // run wen server start
 const TrasferDataWhenServerStarted = async () => {
@@ -12,7 +11,7 @@ const TrasferDataWhenServerStarted = async () => {
         const { data, status } = response;
         if (status) {
             data.map(async (v) => {
-                const { tuid, name, domain } = v;
+                const { domain } = v;
                 const FolderPath = process.env.ATTECHMENT_MOVE_FOLDER_PATH + `/${domain}/common-attachments`;
                 const FolderPathList = await GetAllFolderList(FolderPath);
                 FolderPathList.map((item) => {
@@ -32,7 +31,7 @@ const TrasferDataWhenServerStarted = async () => {
 }
 
 const GetAllFolderList = async (directoryPath) => {
-    let result = new Promise((resolve, reject) => {
+    let result = new Promise((resolve) => {
         fs.readdir(directoryPath, { withFileTypes: true }, (err, files) => {
             if (err) {
                 // console.error('Error reading directory:', err);

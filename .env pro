@@ -5,3 +5,4 @@ SAFE_LANES_DB_NAME="sails_master"
 PORT=4005
 DEFAULT_ATTECHMENT_FOLDER_PATH="C:/gitlab/sails-saas-app/"
 ATTECHMENT_MOVE_FOLDER_PATH="C:/gitlab/sails-saas-app/public/sails-attachments"
+GET_ALL_TENENT_LIST="select tuid,name,domain from tenants where tuid='46df6g9x-klpm2-68hp-47kl-180734rsms'"
